@@ -25,7 +25,6 @@ const compat = new FlatCompat({
 export default [
     {
         ignores: [
-            './.eslintignore',
             '**/dist',
             '**/.eslintrc.cjs',
             '**/package.json',
