@@ -19,14 +19,15 @@ export const Loaders = {
         sample({
             clock: [appStarted],
             source: LocationModel.$lastKnownLocation,
-            filter: () => Boolean(LocationModel.$lastKnownLocation),
+            filter: (param) => Boolean(param),
             fn: (params) => params ?? { latitude: 55, longitude: 55 },
             target: getCurrentLocationWeatherQuery.start,
         });
 
         sample({
             clock: appStarted,
-            filter: () => Boolean(LocationModel.$lastKnownLocation),
+            source: LocationModel.$lastKnownLocation,
+            filter: (p) => p === null,
             target: LocationModel.geo.request,
         });
 
