@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
-import { PageLoader } from '@/shared/ui';
 import { routerConfig } from '@/shared/config/router';
+import { PageLoader } from '@/shared/ui';
 
 export function AppRouter() {
     return (

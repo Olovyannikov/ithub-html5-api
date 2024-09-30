@@ -1,15 +1,29 @@
-import { LocationMap } from '@/entities/Location';
 import { useUnit } from 'effector-react';
+
+import { LocationMap } from '@/entities/Location';
+import { getBarsQuery } from '@/entities/Location/api';
 import { LocationModel } from '@/entities/Location/model';
 
 export const BarFinder = () => {
-    const { location } = useUnit({
-        location: LocationModel.geo.$location,
+    const { data, localStorageLocation, requestGeoPosition, addCustomPointer } = useUnit({
+        requestGeoPosition: LocationModel.geo.request,
+        localStorageLocation: LocationModel.$lastKnownLocation,
+        addCustomPointer: LocationModel.customPointerAdded,
+        data: getBarsQuery.$data.map((el) => el?.features),
     });
 
-    const clusterPoints = [[55.751574, 37.573856]];
+    const clusterPoints = data?.map((el) => el.geometry).map((el) => el.coordinates);
+    const clusterProperties = data?.map((el) => el.properties);
 
-    if (!location) return null;
+    if (!localStorageLocation) return null;
 
-    return <LocationMap center={[location.latitude, location.longitude]} clusterPoints={clusterPoints} />;
+    return (
+        <LocationMap
+            trackGeoPosition={requestGeoPosition}
+            center={[localStorageLocation.latitude, localStorageLocation.longitude]}
+            clusterPoints={clusterPoints?.map((el) => [el[1], el[0]])}
+            clusterProperties={clusterProperties}
+            addCustomPointer={addCustomPointer}
+        />
+    );
 };

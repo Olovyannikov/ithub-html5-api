@@ -1,40 +1,56 @@
-import { Map, Placemark, Clusterer, YMaps } from '@pbe/react-yandex-maps';
+import { useCallback, useRef } from 'react';
+import { GeolocationControl, Map, RoutePanel, YMaps } from '@pbe/react-yandex-maps';
+
+import { type Properties } from '../api/dto.ts';
+import { MapState, YMapsQuery } from './constants.ts';
+import { CustomUserPointers } from './CustomUserPointers';
+import { FoundClusters } from './FoundClusters';
+import { UserCurrentLocation } from './UserCurrentLocation';
 
 interface LocationMapProps extends ymaps.IMapState {
-    clusterPoints: number[][];
+    trackGeoPosition: VoidFunction;
+    addCustomPointer?: (pointers: [number, number]) => void;
+    clusterPoints?: number[][];
+    clusterProperties?: Properties[];
 }
 
-export const LocationMap = ({ center = [55.751574, 37.573856], zoom = 18, clusterPoints }: LocationMapProps) => {
+export const LocationMap = ({
+    center = [55.751574, 37.573856],
+    zoom = 16,
+    clusterPoints,
+    clusterProperties,
+    trackGeoPosition,
+    addCustomPointer,
+}: LocationMapProps) => {
+    const ref = useRef<ymaps.Map | undefined>(undefined);
+
+    const mapClickHandler = useCallback(
+        (e: { get(s: string): [number, number] }) => {
+            addCustomPointer?.(e.get('coords'));
+        },
+        [addCustomPointer]
+    );
+
     return (
-        <YMaps>
+        <YMaps query={YMapsQuery}>
             <Map
-                style={{
-                    height: '100vh',
-                    width: '100%',
+                {...MapState}
+                state={{
+                    center,
+                    zoom,
                 }}
-                defaultState={{ center, zoom, controls: ['zoomControl', 'fullscreenControl'] }}
-                modules={['control.ZoomControl', 'control.FullscreenControl']}
+                instanceRef={ref}
+                onClick={mapClickHandler}
             >
-                <Clusterer
+                <RoutePanel
                     options={{
-                        preset: 'islands#invertedVioletClusterIcons',
-                        groupByCoordinates: false,
+                        autofocus: false,
                     }}
-                >
-                    <Placemark
-                        modules={['geoObject.addon.balloon']}
-                        defaultGeometry={center}
-                        defaultOptions={{
-                            iconColor: 'red',
-                        }}
-                        properties={{
-                            balloonContentBody: 'Это ваше местоположение',
-                        }}
-                    />
-                    {clusterPoints.map((coordinates, index) => (
-                        <Placemark modules={['geoObject.addon.balloon']} key={index} geometry={coordinates} />
-                    ))}
-                </Clusterer>
+                />
+                <GeolocationControl onClick={trackGeoPosition} />
+                <UserCurrentLocation center={center} />
+                <FoundClusters clusterPoints={clusterPoints} clusterProperties={clusterProperties} />
+                <CustomUserPointers />
             </Map>
         </YMaps>
     );

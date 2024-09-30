@@ -1,5 +1,10 @@
+import { Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+
 import { IndexPageLazy } from '@/pages/IndexPage';
+import { PageLoader } from '@/shared/ui';
+
+import { Loaders } from './loaders.ts';
 
 export const AppRoutes = {
     INDEX: 'index',
@@ -15,6 +20,11 @@ const RouterPath: Record<AppRoute, string> = {
 export const routerConfig = createBrowserRouter([
     {
         path: RouterPath.index,
-        element: <IndexPageLazy />,
+        element: (
+            <Suspense fallback={<PageLoader />}>
+                <IndexPageLazy />
+            </Suspense>
+        ),
+        loader: Loaders.index,
     },
 ]);
