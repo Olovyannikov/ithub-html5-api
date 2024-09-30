@@ -1,8 +1,7 @@
 .paper {
     position: absolute;
-    right: 20px;
-    top: 20px;
+    right: 10px;
+    top: 10px;
     z-index: 1;
-    width: 30vw;
-    height: 250px;
+    width: 300px;
 } 

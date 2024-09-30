@@ -1,5 +1,6 @@
 {
   "name": "ithub-html5-api",
+  "license": "MIT",
   "version": "0.0.0",
   "author": "Ilya Olovyannikov",
   "scripts": {
@@ -11,10 +12,7 @@
     "lint:ts": "eslint \"**/*.{ts,tsx}\"",
     "lint:ts:fix": "eslint \"**/*.{ts,tsx}\" --fix",
     "lint:css": "npx stylelint \"src/**/*.css\"",
-    "lint:css:fix": "npx stylelint \"**/*.css\" --fix",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:staged": "vitest run"
+    "lint:css:fix": "npx stylelint \"**/*.css\" --fix"
   },
   "dependencies": {
     "@farfetched/core": "^0.12.4",

@@ -1,8 +1,6 @@
 import { useUnit } from 'effector-react';
 
-import { LocationMap } from '@/entities/Location';
-import { getBarsQuery } from '@/entities/Location/api';
-import { LocationModel } from '@/entities/Location/model';
+import { getBarsQuery, LocationMap, LocationModel } from '@/entities/Location';
 
 export const BarFinder = () => {
     const { data, localStorageLocation, requestGeoPosition, addCustomPointer } = useUnit({

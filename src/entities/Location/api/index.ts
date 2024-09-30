@@ -2,7 +2,12 @@ import { createQuery } from '@farfetched/core';
 
 import { createCommonRequestFx, createWeatherRequestFx } from '@/shared/api';
 
-import { LocationApiDto, LocationApiResponseDto, LocationWeatherRequest } from './dto.ts';
+import type {
+    LocationApiDto,
+    LocationApiResponseDto,
+    LocationWeatherRequest,
+    LocationWeatherResponseDto,
+} from './dto.ts';
 
 export const getBarsQuery = createQuery({
     effect: createCommonRequestFx<LocationApiDto, LocationApiResponseDto>(({ ll, spn }) => ({
@@ -11,7 +16,7 @@ export const getBarsQuery = createQuery({
 });
 
 export const getCurrentLocationWeatherQuery = createQuery({
-    effect: createWeatherRequestFx<LocationWeatherRequest, void>(({ latitude, longitude }) => ({
-        url: `/weather?lat=${latitude}&lon=${longitude}&appid=${import.meta.env.VITE_WEATHER_API}`,
+    effect: createWeatherRequestFx<LocationWeatherRequest, LocationWeatherResponseDto>(({ latitude, longitude }) => ({
+        url: `/weather?units=metric&lat=${latitude}&lon=${longitude}&appid=${import.meta.env.VITE_WEATHER_API}`,
     })),
 });

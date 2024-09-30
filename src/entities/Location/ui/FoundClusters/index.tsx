@@ -17,7 +17,7 @@ export const FoundClusters = ({ clusterPoints, clusterProperties }: FoundCluster
         {clusterPoints?.map((coordinates, index) => (
             <Placemark
                 options={{
-                    preset: 'islands#circleIcon',
+                    preset: 'islands#yellowBarIcon',
                 }}
                 properties={{
                     balloonContentBody: `
